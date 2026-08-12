@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>葵爸的 5 大高端奶粉横评（1段）</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:#f5f7fa; color:#222; line-height:1.6; }
+  .wrap { max-width:980px; margin:0 auto; padding:24px 16px 60px; }
+  header { text-align:center; padding:32px 0 12px; }
+  header h1 { font-size:27px; font-weight:800; letter-spacing:1px; }
+  header .sub { color:#888; margin-top:6px; font-size:14px; }
+  .section { background:#fff; border-radius:14px; padding:22px; margin:18px 0; box-shadow:0 2px 12px rgba(0,0,0,.05); }
+  .section h2 { font-size:20px; border-left:4px solid #1E5AA8; padding-left:10px; margin-bottom:6px; }
+  .section-desc { color:#666; font-size:14px; margin-bottom:14px; }
+  .chart-s { font-size:14px; color:#555; background:#f0f4fa; border-radius:10px; padding:12px 14px; margin-top:12px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(185px,1fr)); gap:12px; }
+  .card { border:1px solid #eee; border-radius:12px; padding:14px; }
+  .card h3 { font-size:15px; margin-bottom:4px; }
+  .card .tag { font-size:12px; color:#1E5AA8; background:#eef4fc; display:inline-block; padding:2px 8px; border-radius:8px; margin-bottom:8px; }
+  .card .price { font-size:20px; font-weight:800; color:#C0392B; }
+  .card .unit { color:#888; font-size:12px; margin-top:2px; }
+  .card ul { list-style:none; margin-top:8px; font-size:12px; }
+  .card li { display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px dashed #f0f0f0; }
+  .card .yes { color:#2E7D32; } .card .no { color:#C0392B; }
+  table { width:100%; border-collapse:collapse; font-size:13px; margin-top:8px; }
+  th,td { border:1px solid #e8e8e8; padding:8px 9px; text-align:center; vertical-align:middle; }
+  th { background:#1E5AA8; color:#fff; font-weight:600; }
+  tr:nth-child(even) td { background:#fafcff; }
+  td.hl { background:#fff4e6 !important; font-weight:700; }
+  td.dim { background:#f3f6fb; font-weight:600; text-align:left; }
+  .disclaimer { font-size:12px; color:#999; margin-top:18px; padding:14px; background:#f7f7f7; border-radius:10px; }
+  .callout { font-size:13px; border-radius:10px; padding:12px 14px; margin:12px 0; }
+  .callout.warn { background:#fff7e6; border:1px solid #ffd591; color:#8a5a00; }
+  .callout.goat { background:#f6ffed; border:1px solid #b7eb8f; color:#3f6212; }
+  .callout.hydro { background:#e6f4ff; border:1px solid #91caff; color:#0958d9; }
+  .radar-box { width:100%; height:430px; }
+  .bar-box { width:100%; height:330px; }
+  .logic { font-size:14px; color:#444; }
+  .logic b { color:#1E5AA8; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>葵爸的 5 大高端奶粉横评</h1>
+    <div class="sub">锚点：美赞臣蓝臻 · 对手：海普诺凯1897荷致 / 佳贝艾特悦白 / 合生元派星 / 雀巢能恩全护 · 1段（0-6月） · 数据采集 2026-08</div>
+  </header>
+
+  <!-- 选品逻辑 -->
+  <div class="section">
+    <h2>为什么是这 5 款</h2>
+    <p class="logic">同属<b>超高端价格带（约 ¥41–52 / 100g）</b>，三条完全不同的高端路线，蓝臻做锚点：<br>
+    · <b>牛奶粉强化路线</b>：蓝臻（MFGM乳脂球膜+乳铁蛋白）、海普诺凯荷致（Pro59全面营养+A2+乳铁）、合生元派星（LPN乳桥蛋白+6HMO）<br>
+    · <b>羊奶路线</b>：佳贝艾特悦白（山羊奶天然低敏）<br>
+    · <b>防敏水解路线</b>：雀巢能恩全护（适度水解+7HMO，适用场景不同，见脚注）</p>
+  </div>
+
+  <!-- 概览卡片 -->
+  <div class="section">
+    <h2>参评清单</h2>
+    <div class="cards" id="cards"></div>
+  </div>
+
+  <!-- 乳铁蛋白客观框（纪律：降权 + 标注来源） -->
+  <div class="callout warn">
+    <b>⚠️ 乳铁蛋白客观说明（必读）：</b>横评中乳铁蛋白<b>不做排分主导</b>。① 牛源乳铁蛋白与人源氨基酸同源性约 69%，三级结构相似但不完全相同，在婴儿肠道受体结合与功能发挥上存在差异，<b>牛源 ≠ 人源</b>；② 母乳才是乳铁蛋白金标准来源，配方添加为部分模拟；③ 1 段（0-6 月）婴儿肠道/肾脏发育未成熟，高剂量外源蛋白添加的必要性在学界有审慎讨论（部分观点担忧加重肠道/肾脏负担）；④ FDA/EFSA 等认可牛乳铁蛋白<b>安全性</b>，但<b>未认可</b>其「提高免疫力/维持肠道健康」等功效宣称（安全 ≠ 功效）。各品牌「XX倍」「珍稀」等表述均为品牌方宣称。
+  </div>
+
+  <!-- 雷达图 -->
+  <div class="section">
+    <h2>六维能力雷达（作者主观模型）</h2>
+    <p class="section-desc">维度：奶基新鲜度 / 核心营养 / DHA / 免疫强化 / 消化吸收 / 性价比。分值为作者依据公开数据的主观加权，仅供横向参考，非第三方检测，也非购买建议。</p>
+    <div id="radar" class="radar-box"></div>
+  </div>
+
+  <!-- 柱状图 DHA -->
+  <div class="section">
+    <h2>关键指标①：DHA（mg/100kJ，罐身直标）</h2>
+    <div id="barDHA" class="bar-box"></div>
+    <div class="chart-s">五款均达到或超过新国标 1 段下限（3.6 mg/100kJ）。蓝臻（4.8）、佳贝艾特（4.8，直标）、荷致（4.68）、派星（4.7，100mg/100g 折算）同处第一梯队；能恩全护为适度水解定位，DHA 取国标下限。＊换算按 100g≈21.3×100kJ 计。</div>
+  </div>
+
+  <!-- 柱状图 OPO -->
+  <div class="section">
+    <h2>关键指标②：OPO / 结构脂（g/100g）</h2>
+    <div id="barOPO" class="bar-box"></div>
+    <div class="chart-s">派星（SN-2 PLUS Ultra 5.3，含天然乳脂+MCT）、海普诺凯（4.92）结构脂堆料最足；佳贝艾特为 OPL 结构脂 4.6（OPL 吸收效率约为常规 OPO 的 2 倍）；蓝臻、能恩全护未添加 OPO。OPO 作用为减少钙皂、软化大便，非「越多越好」。</div>
+  </div>
+
+  <!-- 详细对比表 -->
+  <div class="section">
+    <h2>营养成分详细对比</h2>
+    <p class="section-desc">营养数据以品牌官网 / 电商旗舰店商品页 / 配方注册公开信息为准（采集 2026-08）；mg/100g 为换算近似值。已逐项核实为 1 段（0-6 月）最新在售版本，未用 2/3 段混替。派星常规强化具体量、GOS 量未在电商页公示，以实物罐身为准。</p>
+    <table id="matrix"></table>
+  </div>
+
+  <!-- 羊奶脚注 -->
+  <div class="callout goat">
+    <b>🐑 羊奶基脚注（佳贝艾特悦白）：</b>羊乳基与牛乳基的蛋白结构不同（山羊奶 αs1-酪蛋白占比约 5.6%，远低于牛奶的约 38%），脂肪球更小，故「吸收 / 致敏」维度应<b>单独看待</b>，不可与牛奶粉放进同一把尺子硬比。羊奶天然乳铁蛋白含量偏低，其自护逻辑靠 HMO + 核苷酸 + 天然免疫因子，而非强化乳铁蛋白。
+  </div>
+
+  <!-- 水解脚注 -->
+  <div class="callout hydro">
+    <b>🛡️ 防敏水解脚注（雀巢能恩全护）：</b>为<b>适度水解配方（pHF-W）</b>，定位是预防 / 缓解牛奶蛋白敏感、作「第一口奶」候选，适用场景不同于普通牛奶粉 / 羊奶粉。其优势在「低敏 + 7HMO + 双益生菌」构建肠道屏障，而非堆高乳铁蛋白或 OPO。健康宝宝无敏感风险时，未必需要此类特殊配方。
+  </div>
+
+  <!-- 价格对比表 -->
+  <div class="section">
+    <h2>四平台参考价（元/100g 公平对比）</h2>
+    <p class="section-desc">规格不同（蓝臻 820g，其余 800g）直接比总价不公平，统一折算克单价。价格为参考价（大促/常驻到手价区间），采集 2026-08；吊牌价常高 20–40%，官方旗舰价亦可能更高，波动以实际页面为准。</p>
+    <table id="price"></table>
+  </div>
+
+  <!-- 选购建议 -->
+  <div class="section">
+    <h2>选购建议：按你家娃的情况对号入座</h2>
+    <p class="section-desc">没有「最好的奶粉」，只有「最对路的配方」。先看自家宝宝的实际需求，再对照下面 6 种场景选。价格为参考克单价（元/100g，采集 2026-08）。</p>
+    <table>
+      <tr><th>你的情况</th><th>优先看</th><th>为什么</th><th>注意</th></tr>
+      <tr><td class="dim">想要配方全面均衡、省心不纠结</td><td><b>海普诺凯1897荷致</b>（≈¥41）</td><td>鲜奶A2 + 5种HMO + 乳铁200 + OPO 4.92，六维雷达无短板，克单价还是最低一档</td><td>「全面」≠「对症」，结合娃的消化和过敏史再定</td></tr>
+      <tr><td class="dim">宝宝便便干硬、易便秘，重视吸收</td><td><b>合生元派星</b>（≈¥40–44）</td><td>OPO 5.3 全场最高 + 天然乳脂 + MCT，SN-2 PLUS 主打减少钙皂、软化便便</td><td>认准 2026 新升级版 800g（YP20175031），别买成旧版/天护</td></tr>
+      <tr><td class="dim">肠胃娇嫩、想换羊奶试试</td><td><b>佳贝艾特悦白</b>（≈¥39–46）</td><td>100% 山羊奶天然低敏 + OPL 结构脂（吸收效率约为常规 OPO 2 倍）</td><td>⚠️ 羊奶也含乳糖！乳糖不耐受的宝宝不适合；乳铁天然低，别指望它补免疫</td></tr>
+      <tr><td class="dim">认准「乳铁+MFGM」经典路线、预算宽裕</td><td><b>美赞臣蓝臻</b>（≈¥42–52）</td><td>乳铁 446 + MFGM，免疫路线标杆，本期锚点</td><td>克单价最贵一档，还原奶倾向；乳铁高≠功效强（见上方客观框）</td></tr>
+      <tr><td class="dim">医生建议防敏 / 有牛奶蛋白敏感风险</td><td><b>雀巢能恩全护</b>（≈¥48.1）</td><td>适度水解 + 7种HMO + 双益生菌，防敏特殊配方</td><td>健康宝宝无需；换配方向请先遵医嘱</td></tr>
+      <tr><td class="dim">单纯想省预算、又要高端配方</td><td><b>荷致 / 派星 / 佳贝艾特</b>（≈¥39–44）</td><td>同价位里堆料更足，比蓝臻便宜 10–20%</td><td>别为省几块钱换成不适合自家娃的基粉</td></tr>
+    </table>
+
+    <div class="callout warn">
+      <b>📌 下单前最后 3 句大实话：</b>① <b>羊奶 ≠ 无乳糖</b>——「乳蛋白敏感」和「乳糖不耐受」是两码事，前者可考虑羊奶/水解，后者任何奶都含乳糖，先分清；② <b>水解奶粉别盲买</b>——能恩全护是防敏特殊配方，健康宝宝用不上，反而可能白白多花钱；③ <b>换奶记得留 7–14 天转奶期</b>——新旧混合、逐顿过渡，观察便便和皮肤反应，别今天换明天就下结论。
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    免责声明：本测评基于各产品公开包装标签、品牌官网营养数据整理，仅供横向参考，不构成医疗建议，亦非官方背书。母乳是婴儿最理想的食物，世界卫生组织建议 0–6 月纯母乳喂养。购买前请以品牌官方最新信息及儿科/注册营养师建议为准。文中「品牌方宣称」「学术假说」类表述已标注来源，请理性判断。
+  </div>
+</div>
+
+<script>
+const products = [
+  { name:"美赞臣蓝臻", tag:"MFGM乳脂球膜+乳铁蛋白", price:"¥344–430", unit:"¥42–52", spec:"820g",
+    metrics:{"奶基新鲜度":3,"核心营养":5,"DHA":5,"免疫强化":5,"消化吸收":4,"性价比":3},
+    rows:{ "奶基":"还原奶倾向","DHA":"4.8","乳铁蛋白":"446mg","OPO":"无" } },
+  { name:"海普诺凯1897荷致", tag:"Pro59全面营养+A2+乳铁", price:"¥307–384", unit:"¥41", spec:"800g",
+    metrics:{"奶基新鲜度":5,"核心营养":5,"DHA":5,"免疫强化":5,"消化吸收":5,"性价比":4},
+    rows:{ "奶基":"鲜奶A2","DHA":"4.68","乳铁蛋白":"200mg","OPO":"4.92" } },
+  { name:"佳贝艾特悦白", tag:"山羊奶·天然低敏", price:"¥310–372", unit:"¥39–46", spec:"800g",
+    metrics:{"奶基新鲜度":5,"核心营养":4,"DHA":5,"免疫强化":3,"消化吸收":5,"性价比":4},
+    rows:{ "奶基":"山羊奶","DHA":"4.8","乳铁蛋白":"天然低","OPO":"4.6" } },
+  { name:"合生元派星", tag:"LPN+6重HMO+IgG", price:"¥318–353", unit:"¥40–44", spec:"800g",
+    metrics:{"奶基新鲜度":5,"核心营养":5,"DHA":4,"免疫强化":5,"消化吸收":5,"性价比":4},
+    rows:{ "奶基":"鲜奶(法)","DHA":"4.7","乳铁蛋白":"主LPN","OPO":"5.3" } },
+  { name:"雀巢能恩全护", tag:"适度水解·7HMO防敏", price:"¥365–392", unit:"¥48.1", spec:"800g",
+    metrics:{"奶基新鲜度":3,"核心营养":4,"DHA":3,"免疫强化":5,"消化吸收":5,"性价比":3},
+    rows:{ "奶基":"水解","DHA":"3.6","乳铁蛋白":"未强化","OPO":"无" } },
+];
+
+// 概览卡片
+document.getElementById('cards').innerHTML = products.map(p=>`
+  <div class="card">
+    <h3>${p.name}</h3>
+    <span class="tag">${p.tag}</span>
+    <div class="price">${p.price}</div>
+    <div class="unit">约 ${p.unit} 元/100g · ${p.spec}</div>
+    <ul>${Object.entries(p.rows).map(([k,v])=>`<li><span>${k}</span><b>${v}</b></li>`).join('')}</ul>
+  </div>`).join('');
+
+// 雷达图
+const dims = ["奶基新鲜度","核心营养","DHA","免疫强化","消化吸收","性价比"];
+const radar = echarts.init(document.getElementById('radar'));
+radar.setOption({
+  tooltip:{},
+  legend:{ data: products.map(p=>p.name), bottom:0, type:'scroll' },
+  radar:{ indicator: dims.map(d=>({name:d,max:5})), radius:'62%' },
+  series:[{ type:'radar', data: products.map(p=>({
+    name:p.name, value:dims.map(d=>p.metrics[d]),
+    areaStyle:{opacity:.10}, lineStyle:{width:2}
+  })) }]
+});
+
+// DHA 柱状图
+const barDHA = echarts.init(document.getElementById('barDHA'));
+const dhaData = [4.8, 4.68, 4.8, 4.7, 3.6];
+barDHA.setOption({
+  tooltip:{trigger:'axis', formatter:function(a){ const v=a[0].value; return a[0].name+'：'+v+' mg/100kJ'; }},
+  grid:{left:50,right:20,top:30,bottom:60},
+  xAxis:{ type:'category', data: products.map(p=>p.name), axisLabel:{interval:0, fontSize:11} },
+  yAxis:{ type:'value', name:'mg/100kJ', min:0, max:6 },
+  series:[{ type:'bar', data:dhaData,
+    itemStyle:{ color:'#1E5AA8' }, barWidth:'45%',
+    label:{show:true, position:'top'} }]
+});
+
+// OPO 柱状图
+const barOPO = echarts.init(document.getElementById('barOPO'));
+const opoData = [0, 4.92, 4.6, 5.3, 0];
+barOPO.setOption({
+  tooltip:{trigger:'axis', formatter:function(a){ return a[0].name+'：'+a[0].value+' g/100g'; }},
+  grid:{left:50,right:20,top:30,bottom:60},
+  xAxis:{ type:'category', data: products.map(p=>p.name), axisLabel:{interval:0, fontSize:11} },
+  yAxis:{ type:'value', name:'g/100g', min:0, max:6 },
+  series:[{ type:'bar', data:opoData,
+    itemStyle:{ color:(p)=> p.value==0?'#ddd':'#2E7D32' }, barWidth:'45%',
+    label:{show:true, position:'top'} }]
+});
+
+// 详细对比表
+const matrixRows = [
+ ["奶基", ["脱脂牛奶/乳粉(还原倾向，以罐身为准)","生牛乳(鲜奶A2)","生羊乳+羊乳清(100%山羊奶)","生鲜乳(法国诺曼底)","适度水解乳清蛋白 pHF-W"]],
+ ["产地/版本", ["荷兰·国行新国标","荷兰·新国标","荷兰·新国标(YP20175109)","法国·国行新国标(YP20175031,2026升级)","德国·港版/跨境"]],
+ ["DHA mg/100kJ", ["4.8 (102mg/100g)","4.68 (100)","4.8 (100)","4.7 (100)","3.6 (77.5)"]],
+ ["ARA mg/100kJ", ["6.0 (128mg/100g)","5.61 (120)","6.6 (138)","5.6 (120)","— (77.5)"]],
+ ["乳铁蛋白 mg/100g", ["446","200","天然低(未强化)","未强化(主LPN)","未强化"]],
+ ["免疫其他", ["MFGM乳脂球膜(未标含量)","5种母源HMO","10倍类HMO(天然)","LPN(未标量)+6重HMO(2'-FL 1620mg)","7种HMO+双益生菌"]],
+ ["OPO/结构脂 g/100g", ["无","4.92","OPL 4.6","SN-2 PLUS Ultra 5.3+MCT","无"]],
+ ["HMO种类", ["未明确标注","5种","类HMO(天然含)","6种","7种"]],
+ ["A2 β-酪蛋白", ["否","是","是(山羊奶天然)","未明确标注","否(另有A2版)"]],
+ ["益生菌", ["无","Bb-12","Bb-12(配料实锤)","未标注","B.infantis+B.lactis"]],
+ ["益生元 g/100g", ["GOS1.56+聚葡萄糖1.56","GOS1.71+FOS0.21","GOS1.71+FOS0.19","GOS含(量未公示)","低聚糖(HMO)"]],
+ ["核苷酸 mg/100g", ["15.5","23.1","22","含(量未公示)","含"]],
+ ["常规强化(胆碱/牛磺/肌醇/左旋)", ["全 121/30/42.5/10.2","全 250/32/33/13","全 134/38/40/16","含(量未公示)","全"]],
+ ["敏感成分", ["无(1段无蔗糖/香兰素)","无(全段无蔗糖/香精)","无蔗糖/麦芽糊精/葡萄糖浆(新国标)","无蔗糖/香精(去葡萄糖浆)","全乳糖·无蔗糖/香精"]],
+ ["规格", ["820g","800g","800g","800g","800g"]],
+ ["参考价(到手) 元", ["344–430","307–384","310–372","318–353","365–392"]],
+ ["克单价 元/100g", ["42–52","41","39–46","40–44","48.1"]],
+];
+document.getElementById('matrix').innerHTML =
+  `<tr><th>维度</th>${products.map(p=>`<th>${p.name}</th>`).join('')}</tr>` +
+  matrixRows.map(r=>`<tr><td class="dim">${r[0]}</td>${r[1].map(v=>`<td>${v}</td>`).join('')}</tr>`).join('');
+
+// 价格表
+document.getElementById('price').innerHTML =
+  `<tr><th>产品</th><th>规格</th><th>参考价(到手) 元</th><th>克单价 元/100g</th></tr>` +
+  products.map(p=>`<tr><td>${p.name}</td><td>${p.spec}</td><td>${p.price}</td><td class="hl">${p.unit}</td></tr>`).join('');
+
+window.addEventListener('resize',()=>{ radar.resize(); barDHA.resize(); barOPO.resize(); });
+</script>
+</body>
+</html>
